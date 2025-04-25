@@ -1,0 +1,36 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - snmp-exporter
+    networks:
+      - home-net
+
+  snmp-exporter:
+    image: prom/snmp-exporter
+    ports:
+      - "9116:9116"
+    volumes:
+      - ./snmp.yml:/etc/snmp_exporter/snmp.yml
+    networks:
+      - home-net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - home-net
+
+volumes:
+  grafana-storage:
+
+networks:
+  home-net:
+    external: true
