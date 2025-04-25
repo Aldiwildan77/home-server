@@ -1,6 +1,7 @@
 services:
   prometheus:
     image: prom/prometheus
+    restart: unless-stopped
     ports:
       - "9090:9090"
     volumes:
@@ -12,6 +13,7 @@ services:
 
   snmp-exporter:
     image: prom/snmp-exporter
+    restart: unless-stopped
     ports:
       - "9116:9116"
     volumes:
@@ -21,6 +23,7 @@ services:
 
   grafana:
     image: grafana/grafana
+    restart: unless-stopped
     ports:
       - "3000:3000"
     volumes:
