@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 4,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -38,7 +38,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -117,7 +117,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -134,7 +134,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -409,7 +409,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
           "format": "table",
@@ -420,7 +420,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "irate(ifHCInOctets{job=\"$Job\"}[5m])",
           "format": "table",
@@ -431,7 +431,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "delta(ifHCOutOctets{job=\"$Job\"}[$__range])",
           "format": "table",
@@ -442,7 +442,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "delta(ifHCInOctets{job=\"$Job\"}[$__range])",
           "format": "table",
@@ -453,7 +453,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "ifHighSpeed{job=\"$Job\"}",
           "format": "table",
@@ -468,7 +468,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -526,7 +526,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "max(irate(ifHCInOctets{job=\"$Job\"}[5m]))",
           "legendFormat": "In",
@@ -539,7 +539,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -597,7 +597,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "max(irate(ifHCOutOctets{job=\"$Job\"}[5m]))",
           "instant": false,
@@ -611,7 +611,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -669,7 +669,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "max(8 * irate(ifHCInOctets{job=\"$Job\"}[5m]))",
@@ -684,7 +684,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -742,7 +742,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "max(8 * irate(ifHCOutOctets{job=\"$Job\"}[5m]))",
@@ -757,7 +757,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -815,7 +815,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "max(delta(ifHCInOctets{job=\"$Job\"}[$__range]))",
           "instant": false,
@@ -829,7 +829,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -887,7 +887,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "expr": "max(delta(ifHCOutOctets{job=\"$Job\"}[$__range]))",
           "legendFormat": "Out",
@@ -913,7 +913,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "description": "Max: 10MB  \nRed Status: 9MB",
       "fieldConfig": {
@@ -977,7 +977,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "8 * irate(ifHCOutOctets{job=\"$Job\"}[5m])",
@@ -993,7 +993,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "description": "Max: 10MB  \nRed Status: 9MB",
       "fieldConfig": {
@@ -1057,7 +1057,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "8 * irate(ifHCOutOctets{job=\"$Job\"}[5m])",
@@ -1073,7 +1073,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1184,7 +1184,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "8 * irate(ifHCOutOctets{job=\"$Job\"}[5m])",
@@ -1196,7 +1196,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${Datasource}"
           },
           "editorMode": "code",
           "expr": "8 * -irate(ifHCInOctets{job=\"$Job\"}[5m])",
@@ -1210,7 +1210,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1218,302 +1218,301 @@
         "y": 32
       },
       "id": 38,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+      "panels": [],
+      "title": "Bandwidth Metrics (bytes)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Datasource}"
+      },
+      "description": "Max: 10MB  \nRed Status: 9MB",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "description": "Max: 10MB  \nRed Status: 9MB",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 10000000,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "semi-dark-blue"
-                  },
-                  {
-                    "color": "red",
-                    "value": 9000000
-                  }
-                ]
-              },
-              "unit": "Bps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 12,
-            "x": 0,
-            "y": 33
-          },
-          "id": 34,
-          "options": {
-            "displayMode": "lcd",
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "maxVizHeight": 300,
-            "minVizHeight": 16,
-            "minVizWidth": 8,
-            "namePlacement": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showUnfilled": true,
-            "sizing": "auto",
-            "valueMode": "color"
-          },
-          "pluginVersion": "11.6.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "aejswjlog5ywwe"
-              },
-              "editorMode": "code",
-              "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
-              "intervalFactor": 1,
-              "legendFormat": "{{ifName}} ({{ifAlias}})",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "In (Current)",
-          "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
-          },
-          "description": "Max: 10MB  \nRed Status: 9MB",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "decimals": 2,
-              "mappings": [],
-              "max": 10000000,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "semi-dark-green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 9000000
-                  }
-                ]
-              },
-              "unit": "Bps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 12,
-            "x": 12,
-            "y": 33
-          },
-          "id": 35,
-          "options": {
-            "displayMode": "lcd",
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "maxVizHeight": 300,
-            "minVizHeight": 16,
-            "minVizWidth": 8,
-            "namePlacement": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showUnfilled": true,
-            "sizing": "auto",
-            "valueMode": "color"
-          },
-          "pluginVersion": "11.6.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "aejswjlog5ywwe"
-              },
-              "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
-              "intervalFactor": 1,
-              "legendFormat": "{{ifName}} ({{ifAlias}})",
-              "refId": "B"
-            }
-          ],
-          "title": "Out (Current)",
-          "type": "bargauge"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": [
+          "decimals": 2,
+          "mappings": [],
+          "max": 10000000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byValue",
-                  "options": {
-                    "op": "gte",
-                    "reducer": "allIsZero",
-                    "value": 0
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": true,
-                      "tooltip": true,
-                      "viz": false
-                    }
-                  }
-                ]
+                "color": "semi-dark-blue"
+              },
+              {
+                "color": "red",
+                "value": 9000000
               }
             ]
           },
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 51
-          },
-          "id": 21,
-          "options": {
-            "dataLinks": [],
-            "legend": {
-              "calcs": [
-                "mean",
-                "lastNotNull",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "11.6.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "aejswjlog5ywwe"
-              },
-              "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
-              "instant": false,
-              "intervalFactor": 1,
-              "legendFormat": "Out: {{ifName}} ({{ifAlias}})",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "aejswjlog5ywwe"
-              },
-              "expr": "-irate(ifHCInOctets{job=\"$Job\"}[5m])",
-              "intervalFactor": 1,
-              "legendFormat": "In: {{ifName}} ({{ifAlias}})",
-              "refId": "B"
-            }
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "id": 34,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
           ],
-          "title": "Out / In",
-          "type": "timeseries"
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Datasource}"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
+          "intervalFactor": 1,
+          "legendFormat": "{{ifName}} ({{ifAlias}})",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Bandwidth Metrics (bytes)",
-      "type": "row"
+      "title": "In (Current)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Datasource}"
+      },
+      "description": "Max: 10MB  \nRed Status: 9MB",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 10000000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-green"
+              },
+              {
+                "color": "red",
+                "value": 9000000
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "id": 35,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Datasource}"
+          },
+          "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
+          "intervalFactor": 1,
+          "legendFormat": "{{ifName}} ({{ifAlias}})",
+          "refId": "B"
+        }
+      ],
+      "title": "Out (Current)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 21,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Datasource}"
+          },
+          "expr": "irate(ifHCOutOctets{job=\"$Job\"}[5m])",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "Out: {{ifName}} ({{ifAlias}})",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Datasource}"
+          },
+          "expr": "-irate(ifHCInOctets{job=\"$Job\"}[5m])",
+          "intervalFactor": 1,
+          "legendFormat": "In: {{ifName}} ({{ifAlias}})",
+          "refId": "B"
+        }
+      ],
+      "title": "Out / In",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -1528,15 +1527,34 @@
     "list": [
       {
         "current": {
+          "text": "DS_PROMETHEUS",
+          "value": "ffss0k9c3bnr4c"
+        },
+        "name": "Datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "current": {
           "text": "mikrotik",
           "value": "mikrotik"
         },
-        "datasource": "aejswjlog5ywwe",
-        "definition": "label_values(ifHCInOctets,  job)",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${Datasource}"
+        },
+        "definition": "label_values(ifHCInOctets,job)",
         "includeAll": false,
         "name": "Job",
         "options": [],
-        "query": "label_values(ifHCInOctets,  job)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(ifHCInOctets,job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -1545,7 +1563,7 @@
         "baseFilters": [],
         "datasource": {
           "type": "prometheus",
-          "uid": "aejswjlog5ywwe"
+          "uid": "${Datasource}"
         },
         "filters": [],
         "name": "Filters",
@@ -1560,7 +1578,7 @@
   "timepicker": {},
   "timezone": "Asia/Jakarta",
   "title": "SNMP Mikrotik Data Stats",
-  "uid": "7qKD6I1Wk",
-  "version": 25,
+  "uid": "home_server_snmp_mikrotik_data_stats",
+  "version": 2,
   "weekStart": "monday"
 }

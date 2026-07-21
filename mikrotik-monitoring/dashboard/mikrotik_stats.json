@@ -69,7 +69,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -144,7 +144,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -161,7 +161,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -236,7 +236,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -266,7 +266,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Total SNMP time scrape took (walk and processing)",
       "fieldConfig": {
@@ -341,7 +341,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "snmp_scrape_duration_seconds{instance='$instance'}",
@@ -357,7 +357,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Time SNMP walk/bulkwalk took",
       "fieldConfig": {
@@ -432,7 +432,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "snmp_scrape_walk_duration_seconds{instance='$instance'}",
@@ -448,7 +448,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -511,7 +511,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "snmp_scrape_pdus_returned{instance='$instance'}",
@@ -527,7 +527,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -578,7 +578,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrHlProcessorFrequency{instance='$instance'}",
@@ -633,7 +633,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -712,7 +712,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sysUpTime{instance='$instance'}/100",
@@ -727,7 +727,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "The current operational state of the device described by this row of the table. A value unknown(1) indicates that the current state of the device is unknown. running(2) indicates that the device is up and running and that no unusual error conditions are known. The warning(3) state indicates that agent has been informed of an unusual error condition by the operational software (e.g., a disk device driver) but that the device is still 'operational'. An example would be a high number of soft errors on a disk. A value of testing(4), indicates that the device is not available for use because it is in the testing state. The state of down(5) is used only when the agent has been informed that the device is not available for any use.",
       "fieldConfig": {
@@ -819,7 +819,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "hrDeviceStatus{instance='$instance', hrDeviceIndex=\"1\"}",
@@ -835,7 +835,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -885,7 +885,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sysIdentity{instance='$instance'}",
@@ -902,7 +902,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -952,7 +952,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrLicSoftwareId{instance='$instance'}",
@@ -969,7 +969,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1052,7 +1052,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "hrProcessorLoad{instance='$instance'}",
@@ -1063,7 +1063,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrHlTemperature{instance='$instance'}/10",
@@ -1077,7 +1077,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "(hrStorageUsed{hrStorageIndex='65536',instance='$instance'} * 100 )/(hrStorageSize{hrStorageIndex='65536',instance='$instance'})",
@@ -1089,7 +1089,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "(hrStorageUsed{hrStorageIndex='131072',instance='$instance'} * 100 )/(hrStorageSize{hrStorageIndex='131072',instance='$instance'})",
@@ -1101,7 +1101,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrHlVoltage{instance='$instance'}/10",
@@ -1117,7 +1117,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1169,7 +1169,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "time()-(hrSystemDate{instance='$instance'})",
@@ -1185,7 +1185,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1235,7 +1235,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrLicVersion{instance='$instance'}",
@@ -1253,7 +1253,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1303,7 +1303,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sysDescr{instance='$instance'}",
@@ -1320,7 +1320,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "The number of errors detected on this device",
       "fieldConfig": {
@@ -1374,7 +1374,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "hrDeviceErrors{instance='$instance', hrDeviceIndex=\"1\"}",
@@ -1391,7 +1391,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1450,7 +1450,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "avg(hrProcessorLoad{instance='$instance'})",
@@ -1466,7 +1466,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1536,7 +1536,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "(hrStorageUsed{hrStorageIndex='65536',instance='$instance'} * 100 )/(hrStorageSize{hrStorageIndex='65536',instance='$instance'})",
@@ -1552,7 +1552,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1622,7 +1622,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "(hrStorageUsed{hrStorageIndex='131072',instance='$instance'} * 100 )/(hrStorageSize{hrStorageIndex='131072',instance='$instance'})",
@@ -1638,7 +1638,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1704,7 +1704,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrLicLevel{instance='$instance'}",
@@ -1715,7 +1715,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrLicUpgradableTo{instance='$instance'}",
@@ -1731,7 +1731,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "aejswjlog5ywwe"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Status link/states: The current operational state of the interface",
       "fieldConfig": {
@@ -2127,7 +2127,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifPhysAddress{instance='$instance'}",
@@ -2140,7 +2140,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifOperStatus{instance='$instance'}",
@@ -2154,7 +2154,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrInterfaceStatsRxBytes{instance='$instance'}",
@@ -2168,7 +2168,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrInterfaceStatsTxBytes{instance='$instance'}",
@@ -2182,7 +2182,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifSpeed{instance='$instance'}",
@@ -2196,7 +2196,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrInterfaceStatsLinkDowns{instance='$instance'}",
@@ -2210,7 +2210,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifMtu{instance='$instance'}",
@@ -2224,7 +2224,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifType_info{instance='$instance'}",
@@ -2238,7 +2238,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "mtxrPOEInterfaceIndex{instance='$instance'}",
@@ -2252,7 +2252,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "aejswjlog5ywwe"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "ifAlias{instance='$instance'}",
@@ -2394,7 +2394,7 @@
       {
         "current": {
           "text": "prometheus",
-          "value": "aejswjlog5ywwe"
+          "value": "${DS_PROMETHEUS}"
         },
         "hide": 2,
         "includeAll": false,
@@ -2411,7 +2411,7 @@
           "text": "mikrotik",
           "value": "mikrotik"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(ifHCInOctets,  job)",
         "hide": 2,
         "includeAll": false,
@@ -2430,7 +2430,7 @@
           "text": "192.168.88.1",
           "value": "192.168.88.1"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(ifHCInOctets{job=\"mikrotik\"},instance)",
         "includeAll": false,
         "name": "instance",
@@ -2450,7 +2450,7 @@
           "text": "1",
           "value": "1"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(ifHighSpeed{instance='$instance'},ifIndex)",
         "hide": 2,
         "includeAll": false,
@@ -2470,7 +2470,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result(sort(ifIndex{ifName=~'^(ether).+',instance='$instance'}) or sort(ifIndex{ifName=~'^(sfp|wlan).+',instance='$instance'}) or sort(ifIndex{ifName=~'^bridge.+',instance='$instance'}) or  sort(ifIndex{ifName!~'^(ether|bridge).+',instance='$instance'}) )",
         "includeAll": true,
         "name": "Interface",
@@ -2488,7 +2488,7 @@
           "text": "",
           "value": ""
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result(ifHCInOctets{ifName=\"$Interface\",instance=\"$instance\"})",
         "hide": 2,
         "includeAll": false,
@@ -2509,7 +2509,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result((mtxrQueueSimplePacketsIn * on (mtxrQueueSimpleIndex) group_left(mtxrQueueSimpleName) mtxrQueueSimpleName{instance='$instance',}))",
         "hide": 2,
         "includeAll": true,
@@ -2529,7 +2529,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result((mtxrQueueTreePackets * on (mtxrQueueTreeIndex) group_left(mtxrQueueTreeName) mtxrQueueTreeName{instance='$instance',}))",
         "hide": 1,
         "includeAll": true,
@@ -2549,7 +2549,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result((mtxrQueueTreeParentIndex * on (mtxrQueueTreeIndex) group_left(mtxrQueueTreeName) mtxrQueueTreeName{instance='$instance',}))",
         "hide": 1,
         "includeAll": true,
@@ -2568,7 +2568,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "aejswjlog5ywwe",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result((mtxrQueueTreeParentIndex * on (mtxrQueueTreeName) group_left(mtxrQueueTreeIndex) mtxrQueueTreeIndex{instance='$instance',}))",
         "hide": 1,
         "includeAll": true,
@@ -2586,7 +2586,7 @@
         "baseFilters": [],
         "datasource": {
           "type": "prometheus",
-          "uid": "aejswjlog5ywwe"
+          "uid": "${DS_PROMETHEUS}"
         },
         "filters": [],
         "name": "Filters",
@@ -2601,6 +2601,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "SNMP Mikrotik",
-  "uid": "EIl_irh7k",
+  "uid": "home_server_snmp_mikrotik",
   "version": 8
 }

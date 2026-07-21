@@ -1,15 +1,41 @@
 services:
-  prometheus:
-    image: prom/prometheus
+  host-discovery:
+    build:
+      context: ./app/host-discovery
+      dockerfile: Dockerfile
+    container_name: host-discovery
     restart: unless-stopped
-    ports:
-      - "9090:9090"
+    network_mode: host
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./host-discovery.yaml:/app/config.yaml:ro
+      - ./out:/app/out
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  prometheus:
+    image: victoriametrics/victoria-metrics:latest
+    command:
+      - "--storageDataPath=/victoria-metrics-data"
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:8428"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./out:/etc/prometheus/file_sd:ro
+      - victoriametrics-data:/victoria-metrics-data
     depends_on:
       - snmp-exporter
+      - host-discovery
     networks:
       - home-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8428/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   snmp-exporter:
     image: prom/snmp-exporter
@@ -20,6 +46,11 @@ services:
       - ./snmp.yml:/etc/snmp_exporter/snmp.yml
     networks:
       - home-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9116/metrics"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   grafana:
     image: grafana/grafana
@@ -30,10 +61,15 @@ services:
       - grafana-storage:/var/lib/grafana
     networks:
       - home-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   grafana-storage:
+  victoriametrics-data:
 
 networks:
   home-net:
-    external: true
