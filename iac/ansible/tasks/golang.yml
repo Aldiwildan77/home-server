@@ -1,0 +1,23 @@
+---
+- name: Download Go
+  get_url:
+    url: "https://go.dev/dl/go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+    dest: /tmp/go.tar.gz
+
+- name: Remove old Go
+  file:
+    path: /usr/local/go
+    state: absent
+
+- name: Extract Go
+  unarchive:
+    src: /tmp/go.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Configure PATH
+  copy:
+    dest: /etc/profile.d/go.sh
+    mode: "0644"
+    content: |
+      export PATH=$PATH:/usr/local/go/bin

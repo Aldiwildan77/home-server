@@ -1,0 +1,13 @@
+---
+- hosts: local
+  become: true
+
+  tasks:
+    - import_tasks: tasks/python.yml
+      tags: python
+
+    - import_tasks: tasks/docker.yml
+      tags: docker
+
+    - import_tasks: tasks/golang.yml
+      tags: golang
