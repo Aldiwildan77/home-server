@@ -1,0 +1,9 @@
+interval: 3s
+
+discovery:
+  command: ip
+  args:
+    - route
+
+output:
+  path: ./out/hosts.json
