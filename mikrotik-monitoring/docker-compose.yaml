@@ -17,6 +17,7 @@ services:
 
   prometheus:
     image: victoriametrics/victoria-metrics:latest
+    restart: unless-stopped
     command:
       - "--storageDataPath=/victoria-metrics-data"
       - "--promscrape.config=/etc/prometheus/prometheus.yml"
@@ -32,7 +33,7 @@ services:
     networks:
       - home-net
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8428/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8428/health"]
       interval: 30s
       timeout: 5s
       retries: 3
