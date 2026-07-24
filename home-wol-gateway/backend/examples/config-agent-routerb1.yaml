@@ -1,0 +1,20 @@
+# Installed on Router B.1's LAN. UDP-only, peers straight to raspi-home
+# (required -- different subnet from the Mikrotik LAN).
+
+node:
+  id: agent-routerb1
+  listen_udp_addr: ":9090"
+  peers: ["192.168.88.10:9090"] # raspi-home's Mikrotik-LAN IP
+  report_interval: 10s
+
+discovery:
+  command: ip
+  args: [neigh]
+  subnet: ""
+
+wake:
+  broadcast_addr: "255.255.255.255"
+  port: 9
+
+security:
+  psk: "REPLACE_WITH_same_psk_as_raspi-home"

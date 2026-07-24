@@ -1,0 +1,38 @@
+name: home-wol-gateway release
+
+on:
+  push:
+    tags:
+      - "home-wol-gateway-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: home-wol-gateway/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: home-wol-gateway/backend/go.mod
+
+      - name: Build all targets
+        run: ./build.sh
+
+      - name: Checksums
+        run: |
+          cd dist
+          sha256sum * > checksums.txt
+          cat checksums.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: home-wol-gateway/backend/dist/*
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true

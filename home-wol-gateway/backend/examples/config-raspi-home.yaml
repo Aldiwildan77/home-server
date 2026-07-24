@@ -1,0 +1,26 @@
+# Installed on the Mikrotik's LAN, same segment as the PC and Smart TV.
+# The only node with HTTP on -- this is what the frontend points at.
+
+node:
+  id: raspi-home
+  listen_udp_addr: ":9090"
+  listen_http_addr: ":8080"
+  advertise_http_addr: "http://192.168.88.10:8080" # this machine's own LAN IP
+  peers: [] # empty by design; other Mikrotik-LAN nodes would find this one via broadcast
+  report_interval: 10s
+
+discovery:
+  command: ip
+  args: [neigh]
+  subnet: "192.168.88.0/24" # Mikrotik LAN CIDR -- adjust to match yours
+
+wake:
+  broadcast_addr: "255.255.255.255"
+  port: 9
+
+db:
+  path: "./data/inventory.db"
+
+security:
+  psk: "REPLACE_WITH_openssl_rand_-hex_32"
+  api_token: "REPLACE_WITH_a_different_openssl_rand_-hex_32"

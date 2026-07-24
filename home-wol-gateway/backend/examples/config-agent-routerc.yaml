@@ -1,0 +1,29 @@
+# Installed on Router C's LAN. Two peers for redundancy -- if either
+# Router B or Router B.1 goes down, this node stays in the mesh through
+# the other one.
+#
+# NOTE: both peer IPs must actually be *routable* from Router C's LAN
+# (i.e. Router C's gateway allows LAN-to-LAN traffic back toward Router
+# B / B.1, not just internet-bound NAT). If your routers block
+# cross-subnet traffic by default, you'll need to allow UDP :9090
+# between these subnets first.
+
+node:
+  id: agent-routerc
+  listen_udp_addr: ":9090"
+  peers:
+    - "192.168.89.10:9090" # agent-routerb's IP on Router B's LAN
+    - "192.168.90.10:9090" # agent-routerb1's IP on Router B.1's LAN
+  report_interval: 10s
+
+discovery:
+  command: ip
+  args: [neigh]
+  subnet: ""
+
+wake:
+  broadcast_addr: "255.255.255.255"
+  port: 9
+
+security:
+  psk: "REPLACE_WITH_same_psk_as_raspi-home"

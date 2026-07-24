@@ -1,0 +1,48 @@
+# Every node runs the same binary and is a peer in a mesh, not a fixed
+# role. This example is the raspi, with HTTP on so the frontend can reach it.
+#
+# peers is only for bridging into a DIFFERENT subnet (broadcast can't
+# cross a router) -- and even then only needs setting on one side, the
+# other learns the edge once it hears back. Nodes on the SAME subnet find
+# each other automatically via a signed LAN broadcast beacon, as long as
+# they share listen_udp_addr's port -- leave peers empty for those.
+
+node:
+  id: raspi-home
+  listen_udp_addr: ":9090"
+  listen_http_addr: ":8080"
+  # the address other people can actually reach this node's API at --
+  # published in /topology so a frontend can offer "switch to this node".
+  # Leave empty if it's not directly reachable.
+  advertise_http_addr: "http://192.168.1.10:8080"
+  peers: [] # e.g. ["192.168.50.1:9090", "192.168.60.1:9090"] for other subnets
+  report_interval: 10s
+
+discovery:
+  command: ip
+  args:
+    - neigh
+  # optional: this node's own CIDR. Set it to actively ping-sweep before
+  # reading the neighbor table, so idle devices show up too, not just
+  # ones with recent traffic. Leave empty to stay passive-only.
+  subnet: "" # e.g. "192.168.1.0/24"
+
+# only used if this node ends up owning a woken MAC (broadcasts locally)
+wake:
+  broadcast_addr: "255.255.255.255"
+  port: 9
+
+# only used if listen_http_addr is set: persisted inventory + WoL
+# allow-list for this node's own view of the mesh
+db:
+  path: "./data/inventory.db"
+
+# both required -- the process refuses to start without them.
+# psk must be IDENTICAL on every node in the mesh. Each node derives its
+# own signing key from it (HMAC-SHA256(psk, node id)) automatically --
+# nothing else to configure. Wrong or missing psk means that node's
+# packets are silently dropped by everyone else. api_token only matters
+# if listen_http_addr is set, and gates the HTTP API as a bearer token.
+security:
+  psk: "" # e.g. output of: openssl rand -hex 32
+  api_token: "" # e.g. output of: openssl rand -hex 32
