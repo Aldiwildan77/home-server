@@ -1,7 +1,10 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -75,6 +78,10 @@ type DBConfig struct {
 }
 
 func LoadConfig(path string) (cfg *Config, err error) {
+	// db.path defaults next to the config file itself, not the process's
+	// cwd -- same reasoning as -config existing at all: a relative path
+	// silently means something different depending on where you happen to
+	// launch this from (systemd's WorkingDirectory, a terminal, etc).
 	cfg = &Config{
 		Node: NodeConfig{
 			ID:             "local",
@@ -91,7 +98,7 @@ func LoadConfig(path string) (cfg *Config, err error) {
 			Port:          9,
 		},
 		DB: DBConfig{
-			Path: "./data/inventory.db",
+			Path: filepath.Join(filepath.Dir(path), "data", "inventory.db"),
 		},
 	}
 
@@ -106,4 +113,68 @@ func LoadConfig(path string) (cfg *Config, err error) {
 
 	err = yaml.Unmarshal(configFile, cfg)
 	return
+}
+
+const initConfigTemplate = `node:
+  id: %s
+  listen_udp_addr: ":9090"
+  listen_http_addr: ""   # set to e.g. ":8080" to serve the HTTP API + frontend from this node
+  advertise_http_addr: ""
+  peers: []               # leave empty on the same subnet as another node; otherwise ["<ip>:9090"]
+  report_interval: 10s
+
+discovery:
+  command: ip
+  args: [neigh]
+  subnet: ""              # e.g. "192.168.1.0/24" to actively ping-sweep
+
+wake:
+  broadcast_addr: "255.255.255.255"
+  port: 9
+
+db:
+  path: "%s"   # only read if listen_http_addr is set
+
+security:
+  psk: "%s"
+  api_token: "%s"
+`
+
+// WriteInitConfig writes a starter config to path with freshly generated
+// secrets, refusing to clobber an existing file. nodeID lets -init pick a
+// sensible default id instead of always writing "local". db.path is
+// generated relative to path's own directory (see LoadConfig).
+func WriteInitConfig(path, nodeID string) error {
+	if _, err := os.Stat(path); err == nil {
+		return fmt.Errorf("%s already exists -- not overwriting", path)
+	} else if !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+
+	if dir := filepath.Dir(path); dir != "." {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return err
+		}
+	}
+
+	psk, err := randomHex(32)
+	if err != nil {
+		return err
+	}
+	apiToken, err := randomHex(32)
+	if err != nil {
+		return err
+	}
+
+	dbPath := filepath.Join(filepath.Dir(path), "data", "inventory.db")
+	content := fmt.Sprintf(initConfigTemplate, nodeID, dbPath, psk, apiToken)
+	return os.WriteFile(path, []byte(content), 0600)
+}
+
+func randomHex(n int) (string, error) {
+	buf := make([]byte, n)
+	if _, err := rand.Read(buf); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(buf), nil
 }

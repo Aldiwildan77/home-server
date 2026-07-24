@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
+	"fmt"
 	"net"
 	"net/http"
 	"os"
@@ -14,10 +16,28 @@ import (
 )
 
 func main() {
+	configPath := flag.String("config", "", "path to config.yaml (default: ./config.yaml)")
+	initID := flag.String("init", "", "write a starter config.yaml with this node id to -config (or the default path), then exit")
+	flag.Parse()
+
+	path := *configPath
+	if path == "" {
+		path = DefaultConfigPath()
+	}
+
+	if *initID != "" {
+		if err := WriteInitConfig(path, *initID); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		fmt.Printf("Wrote %s -- edit it, then run without -init to start.\n", path)
+		return
+	}
+
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	cfg, err := LoadConfig(DefaultConfigPath())
+	cfg, err := LoadConfig(path)
 	if err != nil {
 		zlog.Err(err).Str("action", "LOAD_CONFIG").Msg("failed to load config")
 		return

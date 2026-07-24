@@ -21,7 +21,11 @@ jobs:
         with:
           go-version-file: home-wol-gateway/backend/go.mod
 
-      - name: Build all targets
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build all targets (frontend embedded)
         run: ./build.sh
 
       - name: Checksums

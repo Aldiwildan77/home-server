@@ -22,20 +22,28 @@ type Server struct {
 // NewServer builds the HTTP API any node in the mesh can opt into: the
 // inventory and topology it currently knows about, the WoL allow-list,
 // and the entry point for waking a device wherever in the mesh it is.
-// apiToken is required -- every request must carry it as a bearer token,
-// since this API is otherwise unauthenticated on the LAN.
+// apiToken is required -- every request under these routes must carry it
+// as a bearer token, since this API is otherwise unauthenticated on the
+// LAN. The embedded frontend at "/" is deliberately NOT behind that
+// token -- the browser has no way to attach it on first page load, and
+// the compiled JS/HTML isn't sensitive; only the API calls it makes are.
 func NewServer(node *Node, conn *net.UDPConn, inv Inventory, apiToken string) *Server {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /healthz", healthzHandler())
-	mux.HandleFunc("GET /inventory", inventoryHandler(inv))
-	mux.HandleFunc("GET /topology", topologyHandler(node))
-	mux.HandleFunc("POST /devices/{mac}/allow", allowHandler(node, conn, inv))
-	mux.HandleFunc("POST /wake", wakeHandler(node, inv))
+	auth := func(h http.HandlerFunc) http.Handler {
+		return requireBearerToken(apiToken, h)
+	}
+
+	mux.Handle("GET /healthz", auth(healthzHandler()))
+	mux.Handle("GET /inventory", auth(inventoryHandler(inv)))
+	mux.Handle("GET /topology", auth(topologyHandler(node)))
+	mux.Handle("POST /devices/{mac}/allow", auth(allowHandler(node, conn, inv)))
+	mux.Handle("POST /wake", auth(wakeHandler(node, inv)))
+	mux.Handle("/", http.FileServerFS(webFS()))
 
 	s := &Server{}
 	s.Server = &http.Server{
-		Handler: withCORS(requireBearerToken(apiToken, s.rejectWhileShuttingDown(mux))),
+		Handler: withCORS(s.rejectWhileShuttingDown(mux)),
 	}
 
 	return s

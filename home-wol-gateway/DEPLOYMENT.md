@@ -1,141 +1,112 @@
 # Deploying home-wol-gateway
 
-Two pieces: the **backend** (Go binary, one per machine/subnet) and the
-**frontend** (static site, build once, host anywhere on your LAN).
+One binary per machine/subnet. On any node where you set `listen_http_addr`,
+that same binary also serves the frontend — no separate hosting step needed
+for those nodes. UDP-only nodes (most subnet agents) don't need the
+frontend at all.
 
-## 1. Generate secrets
+## 1. Get the binary
 
-```bash
-openssl rand -hex 32   # -> security.psk (same on every node)
-openssl rand -hex 32   # -> security.api_token (same on every HTTP-enabled node)
-```
-
-Keep these two values handy, you'll paste them into configs below.
-
-## 2. Backend — get the binary
-
-Easiest: download a prebuilt release (Linux amd64/arm64/armv6/armv7 — covers
-generic Linux and every Raspberry Pi model):
+Prebuilt release (Linux amd64/arm64/armv6/armv7 — covers generic Linux and
+every Raspberry Pi model, frontend already embedded):
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/Aldiwildan77/home-server/master/home-wol-gateway/backend/install.sh | sh
 ```
 
-Installs to `/usr/local/bin/home-wol-gateway` (set `INSTALL_DIR=...` to put
-it somewhere else, `HWG_VERSION=home-wol-gateway-vX.Y.Z` to pin a version
+Installs to `/usr/local/bin/home-wol-gateway` (set `INSTALL_DIR=...` for
+somewhere else, `HWG_VERSION=home-wol-gateway-vX.Y.Z` to pin a version
 instead of latest).
 
-Or build from source on each machine that'll run a node:
+Or build from source (`./build.sh` builds the frontend and embeds it too;
+plain `go build .` also works but serves an empty `/` — fine for a UDP-only
+agent that'll never expose HTTP anyway):
 
 ```bash
 cd home-wol-gateway/backend
-go build -o home-wol-gateway .
+./build.sh              # cross-compiles every target into dist/, frontend embedded
+# or just: go build -o home-wol-gateway .
 ```
 
-Or with Docker instead:
+Or with Docker (build from the `home-wol-gateway/` root, not `backend/` —
+the image needs to see `frontend/` too, to embed it the same way):
 
 ```bash
-cd home-wol-gateway/backend
+cd home-wol-gateway
 docker build -t home-wol-gateway .
 ```
 
-## 3. Backend — configure
-
-Copy the example and edit it:
+## 2. Generate a config
 
 ```bash
-cp config.example.yaml config.yaml
+home-wol-gateway -init raspi-home -config /etc/home-wol-gateway/config.yaml
 ```
 
-**First node** (the one your browser will talk to — needs HTTP on):
+Writes a starter config with a freshly generated `psk` and `api_token`
+already filled in (refuses to overwrite if the file already exists). Open
+it and fill in:
 
-```yaml
-node:
-  id: raspi-home
-  listen_udp_addr: ":9090"
-  listen_http_addr: ":8080"
-db:
-  path: "./data/inventory.db"
-security:
-  psk: "<paste psk>"
-  api_token: "<paste api_token>"
-```
+- `node.listen_http_addr` — set to e.g. `":8080"` on the node your browser
+  will talk to. Leave empty on a UDP-only subnet agent.
+- `node.advertise_http_addr` — that node's own reachable URL, e.g.
+  `"http://192.168.1.10:8080"` (only needed if `listen_http_addr` is set).
+- `node.peers` — leave `[]` if this node is on the **same subnet** as
+  another node already in the mesh (they'll find each other automatically
+  via a broadcast beacon, as long as both use the same `listen_udp_addr`
+  port). Set `["<ip>:9090"]` only to bridge into a *different* subnet.
+- `discovery.subnet` — this node's own CIDR, to actively sweep for idle
+  devices instead of only passively reading the ARP table.
 
-**Every other node** (a subnet gateway/agent — UDP only):
+Every other node in the mesh needs the **same `psk`** — copy it from the
+first config into every subsequent `-init` (or just paste it in by hand).
 
-```yaml
-node:
-  id: gateway-livingroom
-  listen_udp_addr: ":9090"
-  peers: [] # see note below
-security:
-  psk: "<paste same psk>"
-```
-
-Leave `peers: []` empty if this node is on the **same subnet** as another
-node already in the mesh — as long as both use the same `listen_udp_addr`
-port, they find each other automatically. Only set `peers: ["<ip>:9090"]`
-to bridge into a *different* subnet (broadcast can't cross a router).
-
-## 4. Backend — run
+## 3. Run it
 
 Quick test:
 
 ```bash
-./home-wol-gateway
+home-wol-gateway -config /etc/home-wol-gateway/config.yaml
 ```
 
 For real use, install as a systemd service so it restarts if it ever
 crashes:
 
 ```bash
-sudo mkdir -p /etc/home-wol-gateway
-sudo cp home-wol-gateway /usr/local/bin/
-sudo cp config.yaml /etc/home-wol-gateway/
-sudo cp home-wol-gateway.service /etc/systemd/system/
+sudo useradd --system --no-create-home --shell /usr/sbin/nologin home-wol-gateway
+sudo chown -R home-wol-gateway:home-wol-gateway /etc/home-wol-gateway
+sudo curl -sSL https://raw.githubusercontent.com/Aldiwildan77/home-server/master/home-wol-gateway/backend/home-wol-gateway.service \
+  -o /etc/systemd/system/home-wol-gateway.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now home-wol-gateway
 sudo systemctl status home-wol-gateway
 ```
 
-Or with Docker:
+(No `-config` flag needed there — the unit's `WorkingDirectory` is already
+`/etc/home-wol-gateway`, and with no `-config` given the binary defaults to
+`config.yaml` in its working directory.)
+
+Or with Docker (image built in step 1):
 
 ```bash
 docker run -d --name home-wol-gateway \
   --restart unless-stopped \
   --network host \
-  -v $(pwd)/config.yaml:/app/config.yaml \
-  -v home-wol-data:/app/data \
-  home-wol-gateway
+  -v /etc/home-wol-gateway:/etc/home-wol-gateway \
+  home-wol-gateway -config /etc/home-wol-gateway/config.yaml
 ```
 
 (`--network host` is the simplest way to get real UDP broadcast + LAN
 discovery working — Docker's default bridge network gets in the way of
 both.)
 
-## 5. Frontend — build and host
+## 4. Connect
 
-```bash
-cd home-wol-gateway/frontend
-npm install
-npm run build
-```
+If a node has `listen_http_addr` set, just open `http://<that node's
+IP>:<port>` in a browser — the frontend is already there, and the gateway
+address field prefills itself. Paste in the `api_token` from step 2 and
+you're connected.
 
-This produces `dist/` — a plain static site. Serve it with anything:
-
-```bash
-npx serve dist          # quick and dirty
-# or drop dist/ behind nginx, Caddy, or any static file host on your LAN
-```
-
-## 6. Connect
-
-Open the frontend in a browser, enter:
-
-- **Gateway address**: `http://<first node's IP>:8080`
-- **API token**: the `api_token` you generated in step 1
-
-Done. Add more nodes anytime by repeating steps 2–4 on another machine.
-Same subnet as an existing node → leave `peers` empty. Different subnet →
-point `peers` at any one node already in the mesh, doesn't have to be the
-first node.
+Add more nodes anytime by repeating steps 1–3 on another machine. Same
+subnet as an existing node → leave `peers` empty. Different subnet → point
+`peers` at any one node already in the mesh, doesn't have to be the first
+node.

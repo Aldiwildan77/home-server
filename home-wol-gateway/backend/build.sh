@@ -1,10 +1,24 @@
 #!/bin/sh
-# Cross-compiles home-wol-gateway for every supported target into dist/.
+# Builds the frontend once, embeds it into the backend, then
+# cross-compiles home-wol-gateway for every supported target into dist/.
 # ESP32 isn't here -- standard Go doesn't target it at all (see
 # esp32-agent/README.md for why, and what a real ESP32 agent would need).
 set -eu
 
 cd "$(dirname "$0")"
+
+FRONTEND_DIR="../frontend"
+if [ -d "$FRONTEND_DIR" ]; then
+	echo "-- building frontend --"
+	(cd "$FRONTEND_DIR" && npm install && npm run build)
+
+	rm -rf web/dist
+	mkdir -p web/dist
+	cp -r "$FRONTEND_DIR/dist/." web/dist/
+else
+	echo "-- frontend/ not found, embedding placeholder (web/dist/.gitkeep) --"
+fi
+
 mkdir -p dist
 
 build() {

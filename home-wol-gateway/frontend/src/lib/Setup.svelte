@@ -4,7 +4,10 @@
 
 	let { onConnected }: { onConnected: () => void } = $props();
 
-	let address = $state("");
+	// If this page is being served by a node itself (the embedded frontend
+	// case), it's almost certainly the gateway the user wants -- prefill
+	// it so setup is just pasting in the token.
+	let address = $state(window.location.origin);
 	let token = $state("");
 	let checking = $state(false);
 	let error = $state("");
