@@ -10,10 +10,11 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// InventoryDevice is a Device plus its WoL allow flag.
+// InventoryDevice is a Device plus its WoL allow flag and user-set alias.
 type InventoryDevice struct {
 	Device
-	WoLAllowed bool `json:"wol_allowed"`
+	WoLAllowed bool   `json:"wol_allowed"`
+	Alias      string `json:"alias,omitempty"`
 }
 
 // Inventory is a node's persisted view of the mesh: every device it
@@ -23,6 +24,7 @@ type Inventory interface {
 	List(ctx context.Context) ([]InventoryDevice, error)
 	SetAllowed(ctx context.Context, mac string, allowed bool) error
 	IsAllowed(ctx context.Context, mac string) (bool, error)
+	SetAlias(ctx context.Context, mac string, alias string) error
 }
 
 type sqliteInventory struct {
@@ -55,10 +57,23 @@ func NewInventory(path string) (Inventory, error) {
 			online INTEGER NOT NULL,
 			node_id TEXT NOT NULL DEFAULT '',
 			wol_allowed INTEGER NOT NULL DEFAULT 0,
+			alias TEXT NOT NULL DEFAULT '',
 			updated_at INTEGER NOT NULL
 		)
 	`); err != nil {
 		return nil, err
+	}
+
+	// Older DBs predate the alias column -- add it if missing. The bundled
+	// SQLite doesn't support "ADD COLUMN IF NOT EXISTS", so check first.
+	hasAlias, err := hasColumn(db, "devices", "alias")
+	if err != nil {
+		return nil, err
+	}
+	if !hasAlias {
+		if _, err := db.Exec(`ALTER TABLE devices ADD COLUMN alias TEXT NOT NULL DEFAULT ''`); err != nil {
+			return nil, err
+		}
 	}
 
 	return &sqliteInventory{db: db}, nil
@@ -97,7 +112,7 @@ func (s *sqliteInventory) Upsert(ctx context.Context, devices Devices) error {
 }
 
 func (s *sqliteInventory) List(ctx context.Context) ([]InventoryDevice, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT mac, ip, hostname, online, node_id, wol_allowed FROM devices ORDER BY mac`)
+	rows, err := s.db.QueryContext(ctx, `SELECT mac, ip, hostname, online, node_id, wol_allowed, alias FROM devices ORDER BY mac`)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +125,7 @@ func (s *sqliteInventory) List(ctx context.Context) ([]InventoryDevice, error) {
 		var online, allowed int
 		var hostname sql.NullString
 
-		if err := rows.Scan(&d.MAC, &d.IP, &hostname, &online, &d.NodeID, &allowed); err != nil {
+		if err := rows.Scan(&d.MAC, &d.IP, &hostname, &online, &d.NodeID, &allowed, &d.Alias); err != nil {
 			return nil, err
 		}
 
@@ -128,6 +143,11 @@ func (s *sqliteInventory) SetAllowed(ctx context.Context, mac string, allowed bo
 	return err
 }
 
+func (s *sqliteInventory) SetAlias(ctx context.Context, mac string, alias string) error {
+	_, err := s.db.ExecContext(ctx, `UPDATE devices SET alias = ? WHERE mac = ?`, alias, mac)
+	return err
+}
+
 func (s *sqliteInventory) IsAllowed(ctx context.Context, mac string) (bool, error) {
 	var allowed int
 
@@ -140,6 +160,31 @@ func (s *sqliteInventory) IsAllowed(ctx context.Context, mac string) (bool, erro
 	}
 
 	return allowed == 1, nil
+}
+
+func hasColumn(db *sql.DB, table, column string) (bool, error) {
+	rows, err := db.Query(`PRAGMA table_info(` + table + `)`)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var cid int
+		var name, typ string
+		var notNull int
+		var dflt sql.NullString
+		var pk int
+
+		if err := rows.Scan(&cid, &name, &typ, &notNull, &dflt, &pk); err != nil {
+			return false, err
+		}
+		if name == column {
+			return true, nil
+		}
+	}
+
+	return false, rows.Err()
 }
 
 func boolToInt(b bool) int {

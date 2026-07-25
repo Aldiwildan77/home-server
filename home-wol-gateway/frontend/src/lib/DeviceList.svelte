@@ -1,12 +1,45 @@
 <script lang="ts">
 	import type { Device } from "./api";
-	import { setAllowed, wake, ApiError } from "./api";
+	import { setAllowed, setAlias, wake, ApiError } from "./api";
 
 	let { devices, onChange }: { devices: Device[]; onChange: () => void } = $props();
 
 	let pending = $state<Record<string, boolean>>({});
 	let feedback = $state<Record<string, string>>({});
 	let pulsing = $state<Record<string, boolean>>({});
+	let editingMac = $state<string | null>(null);
+	let editValue = $state("");
+
+	function deviceName(device: Device): string {
+		return device.alias || device.hostname || device.mac;
+	}
+
+	function startEdit(device: Device) {
+		editingMac = device.mac;
+		editValue = device.alias || "";
+	}
+
+	function cancelEdit() {
+		editingMac = null;
+		editValue = "";
+	}
+
+	async function saveAlias(device: Device) {
+		const alias = editValue.trim();
+		editingMac = null;
+		if (alias === (device.alias || "")) return;
+
+		try {
+			await setAlias(device.mac, alias);
+			onChange();
+		} catch (err) {
+			feedback = { ...feedback, [device.mac]: err instanceof ApiError ? err.message : "Couldn't rename this device." };
+		}
+	}
+
+	function autofocus(node: HTMLInputElement) {
+		node.focus();
+	}
 
 	function pulse(mac: string) {
 		pulsing = { ...pulsing, [mac]: true };
@@ -60,7 +93,24 @@
 				</span>
 
 				<div class="info">
-					<span class="name">{device.hostname || device.mac}</span>
+					{#if editingMac === device.mac}
+						<input
+							class="name-input"
+							type="text"
+							bind:value={editValue}
+							placeholder={device.hostname || device.mac}
+							use:autofocus
+							onblur={() => saveAlias(device)}
+							onkeydown={(e) => {
+								if (e.key === "Enter") saveAlias(device);
+								if (e.key === "Escape") cancelEdit();
+							}}
+						/>
+					{:else}
+						<button type="button" class="name" onclick={() => startEdit(device)} title="Click to rename">
+							{deviceName(device)}
+						</button>
+					{/if}
 					<span class="meta"><span class="mono">{device.ip} · {device.mac}</span> · via {device.node_id}</span>
 					{#if feedback[device.mac]}
 						<span class="feedback">{feedback[device.mac]}</span>
@@ -158,6 +208,40 @@
 	.name {
 		font-weight: 600;
 		font-size: 0.95rem;
+		background: none;
+		border: none;
+		padding: 0;
+		text-align: left;
+		color: var(--color-text);
+		cursor: text;
+		width: fit-content;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.name:hover {
+		text-decoration: underline dotted;
+	}
+
+	.name-input {
+		font-weight: 600;
+		font-size: 0.95rem;
+		font-family: inherit;
+		color: var(--color-text);
+		background: var(--color-bg);
+		border: none;
+		border-radius: var(--radius-sm);
+		padding: 2px 6px;
+		margin: -2px -6px;
+		width: 100%;
+		max-width: 240px;
+	}
+
+	.name-input:focus {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 1px;
 	}
 
 	.meta {

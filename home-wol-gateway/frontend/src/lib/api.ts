@@ -7,6 +7,7 @@ export interface Device {
 	online: boolean;
 	node_id: string;
 	wol_allowed: boolean;
+	alias?: string;
 }
 
 export interface NodeInfo {
@@ -69,6 +70,14 @@ export function setAllowed(mac: string, allow: boolean): Promise<void> {
 	return request(url, token, `/devices/${encodeURIComponent(mac)}/allow`, {
 		method: "POST",
 		body: JSON.stringify({ allow }),
+	});
+}
+
+export function setAlias(mac: string, alias: string): Promise<void> {
+	const { url, token } = requireGateway();
+	return request(url, token, `/devices/${encodeURIComponent(mac)}/alias`, {
+		method: "POST",
+		body: JSON.stringify({ alias }),
 	});
 }
 

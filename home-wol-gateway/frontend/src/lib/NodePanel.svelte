@@ -131,7 +131,7 @@
 						{/if}
 					</span>
 					<span class="name">
-						{device.hostname || device.mac}
+						{device.alias || device.hostname || device.mac}
 						<span class="ip mono">{device.ip} · {device.mac}</span>
 					</span>
 

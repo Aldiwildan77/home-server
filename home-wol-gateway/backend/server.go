@@ -38,6 +38,7 @@ func NewServer(node *Node, conn *net.UDPConn, inv Inventory, apiToken string) *S
 	mux.Handle("GET /inventory", auth(inventoryHandler(inv)))
 	mux.Handle("GET /topology", auth(topologyHandler(node)))
 	mux.Handle("POST /devices/{mac}/allow", auth(allowHandler(node, conn, inv)))
+	mux.Handle("POST /devices/{mac}/alias", auth(aliasHandler(inv)))
 	mux.Handle("POST /wake", auth(wakeHandler(node, inv)))
 	mux.Handle("/", http.FileServerFS(webFS()))
 
@@ -145,6 +146,32 @@ func allowHandler(node *Node, conn *net.UDPConn, inv Inventory) http.HandlerFunc
 		}
 
 		broadcastAllow(conn, node, mac, req.Allow)
+
+		writeJSON(w, http.StatusOK, map[string]string{"status": "updated"})
+	}
+}
+
+// aliasHandler sets a friendly display name for a device. It's local
+// to this node's own inventory view -- unlike the allow flag, it isn't
+// flooded across the mesh, since it's cosmetic rather than something
+// that affects wake authorization or routing.
+func aliasHandler(inv Inventory) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		mac := r.PathValue("mac")
+
+		var req struct {
+			Alias string `json:"alias"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		if err := inv.SetAlias(r.Context(), mac, req.Alias); err != nil {
+			zlog.Err(err).Str("action", "SET_ALIAS").Str("mac", mac).Msg("failed to update alias")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		writeJSON(w, http.StatusOK, map[string]string{"status": "updated"})
 	}
