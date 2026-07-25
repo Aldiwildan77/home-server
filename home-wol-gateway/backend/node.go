@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -240,16 +241,36 @@ func sameUDPAddr(a, b *net.UDPAddr) bool {
 	return a.String() == b.String()
 }
 
+// SetMine merges the latest local scan into what this node knows about
+// its own LAN. Devices are kept once learned even if a later scan
+// doesn't see them -- that's the normal state for a WoL target (it's
+// off, so of course ARP won't have it), and losing the record here
+// would make it unwakeable exactly when it's needed.
 func (n *Node) SetMine(devices Devices) {
 	n.mu.Lock()
 	defer n.mu.Unlock()
 
-	n.mine = devices
+	seen := make(map[string]Device, len(devices))
+	for _, d := range devices {
+		seen[d.MAC] = d
+	}
+
+	merged := make(map[string]Device, len(n.mine)+len(devices))
+	for _, d := range n.mine {
+		if _, ok := seen[d.MAC]; !ok {
+			d.Online = false
+		}
+		merged[d.MAC] = d
+	}
+	maps.Copy(merged, seen)
 
 	now := time.Now()
-	for _, d := range devices {
+	mine := make(Devices, 0, len(merged))
+	for _, d := range merged {
+		mine = append(mine, d)
 		n.devices[d.MAC] = &deviceRecord{device: d, viaHop: n.id, seenAt: now}
 	}
+	n.mine = mine
 }
 
 // Contribution is what this node gossips about itself each tick: its own

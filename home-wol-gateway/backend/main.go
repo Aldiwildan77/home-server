@@ -71,6 +71,23 @@ func main() {
 			zlog.Err(err).Str("action", "OPEN_DB").Msg("failed to open inventory db")
 			return
 		}
+
+		// Restore this node's own devices from the last run. Without this,
+		// a restart while a device happens to be powered off (ARP has
+		// nothing to rediscover it from) would silently forget it -- the
+		// exact case WoL exists for.
+		persisted, err := inv.List(ctx)
+		if err != nil {
+			zlog.Err(err).Str("action", "LOAD_INVENTORY").Msg("failed to load persisted inventory")
+		} else {
+			mine := make(Devices, 0, len(persisted))
+			for _, d := range persisted {
+				if d.NodeID == cfg.Node.ID {
+					mine = append(mine, d.Device)
+				}
+			}
+			node.SetMine(mine)
+		}
 	}
 
 	udpConn, err := listenUDP(cfg.Node.ListenUDPAddr, node, inv)
